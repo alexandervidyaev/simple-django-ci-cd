@@ -8,9 +8,6 @@ SECRET_KEY = '-05sgp9!deq=q1nltm@^^2cc+v29i(tyybv3v2t77qi66czazj'
 ALLOWED_HOSTS = ['*']
 
 
-WSGI_APPLICATION = 'main.wsgi.application'
-
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -82,7 +79,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": '/database/db.sqlite3'
+        "NAME": '/app/database/db.sqlite3'
     }
 }
 
