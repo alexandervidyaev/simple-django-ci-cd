@@ -1,8 +1,8 @@
 stages:
   - build
 
-env:
-  - NAME = web
+variables:
+  NAME: web
 
 
 
