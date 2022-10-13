@@ -1,6 +1,7 @@
 stages:
   - build
-
+  - push
+  - test
 
 variables:
   NAME: web
@@ -16,6 +17,24 @@ Build container:
   script:
     - docker build -t $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/$NAME:$CI_COMMIT_SHORT_SHA .
     - docker build -t $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/$WEBSERVER:$CI_COMMIT_SHORT_SHA ./nginx
+    
+Push to registry:
+  stage: push
+  tags:
+    - docker-runner
+  image: docker:20.10.18
+  services:
+    - docker:dind
+  before_script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+  script:    
     - docker push $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/$NAME:$CI_COMMIT_SHORT_SHA
     - docker push $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/$WEBSERVER:$CI_COMMIT_SHORT_SHA
+
+# Test app:
+#   stage: test
+#   tags:
+#     - docker-runner
+
+
+
