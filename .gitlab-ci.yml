@@ -23,7 +23,7 @@ Test container:
     - shell-runner
   script:
     - docker --version
-    - docker run -it --rm -p 8000:8000 $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/$NAME:$CI_COMMIT_SHORT_SHA python manage runserver 0.0.0.0:8000
+    - docker run -t --rm -p 8000:8000 $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/$NAME:$CI_COMMIT_SHORT_SHA python manage runserver 0.0.0.0:8000
     - curl -o - -I http://localhost:8000
 
 
