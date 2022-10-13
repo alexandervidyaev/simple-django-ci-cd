@@ -2,7 +2,7 @@ stages:
   - build
 
 env:
-  NAME = web
+  - NAME = web
 
 
 
