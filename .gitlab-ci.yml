@@ -20,13 +20,24 @@ Build container:
 Test container:
   stage: test
   tags:
-    - docker-runner
-  image: docker:20.10.18
-  services:
-    - docker:dind
+    - shell-runner
   script:
-    - docker run -it --rm -p 8000:8000 $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/$NAME:$CI_COMMIT_SHORT_SHA python manage runserver 0.0.0.0:8000
-    - curl -o - -I http://localhost:8000
+    - docker --version
+
+
+
+
+
+# Test container:
+#   stage: test
+#   tags:
+#     - docker-runner
+#   image: docker:20.10.18
+#   services:
+#     - docker:dind
+#   script:
+#     - docker run -it --rm -p 8000:8000 $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/$NAME:$CI_COMMIT_SHORT_SHA python manage runserver 0.0.0.0:8000
+#     - curl -o - -I http://localhost:8000
 
 
 
