@@ -16,6 +16,10 @@ services:
     ports:
       - 80:80
     volumes:
+      - ./app/database/:/database_app/
+      - ./app/database/:/app/database/
+      - ./database/:/database/
+      - ./database/:/app/database/
       - ./static_in_env/:/staticfiles/
       - ./media_root/:/media/
     depends_on:
