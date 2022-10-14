@@ -5,6 +5,9 @@ stages:
   # - test
 
 
+variables:
+  GIT_STRATEGY: clone 
+
 Test:
   stage: test
   tags:
