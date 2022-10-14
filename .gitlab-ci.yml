@@ -47,5 +47,6 @@ Deploy to server:
     entrypoint: [""]
   variables:
     DOCKER_HOST: tcp://10.7.160.19:2376
+    DOCKER_DRIVER: overlay2
   script:
     - docker-compose -f docker-compose.yml up -d
