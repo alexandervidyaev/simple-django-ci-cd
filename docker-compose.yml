@@ -7,7 +7,7 @@ services:
     expose:
       - 8000
     volumes:
-      - ./database/:/database/
+      - /home/deployer/lol/:/database/
       - ./static_in_env/:/static_in_env/
       - ./media_root/:/media_root/
   nginx:
@@ -16,7 +16,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./static_in_env/:/staticfiles/
+      - /home/deployer/lol/:/staticfiles/
       - ./media_root/:/media/
     depends_on:
       - web
