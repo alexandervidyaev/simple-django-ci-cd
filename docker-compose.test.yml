@@ -1,28 +1,7 @@
 version: '3.9'
 services:
-  web:
-    image: $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/$NAME:$CI_COMMIT_SHORT_SHA
-    #image: gitlab.corp.local:5050/alexander/django_cicd/web:08e8ab50
-    command: /bin/bash -c "gunicorn demo.wsgi:application --bind 0.0.0.0:8000"
-    expose:
-      - 8000
-    volumes:
-      - ./database/:/database/
-      - ./static_in_env/:/app/static_in_env/
-      - ./media_root/:/app/media_root/
-    healthcheck:
-      test: curl --fail -s http://localhost:8000/ || exit 1
-      interval: 5s
-      timeout: 5s
-      retries: 3
-  nginx:
-    image: $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/$WEBSERVER:$CI_COMMIT_SHORT_SHA
-    #image: gitlab.corp.local:5050/alexander/django_cicd/nginx:08e8ab50
-    ports:
-      - 80:80
-    volumes:
-      - ./static_in_env/:/staticfiles/
-      - ./media_root/:/media/
+  test:
+    build: ./test
     depends_on:
-      web:
-        condition: service_healthy
+      - web
+      - nginx
