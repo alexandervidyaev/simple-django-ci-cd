@@ -2,6 +2,7 @@ stages:
   - build
   - push
   - test
+  - deploy
 
 variables:
   NAME: web
@@ -32,16 +33,32 @@ Push to registry:
     - docker push $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/$NAME:$CI_COMMIT_SHORT_SHA
     - docker push $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/$WEBSERVER:$CI_COMMIT_SHORT_SHA
 
-Test app:
-  stage: test
-  image: docker/compose:1.29.2
-  script:
-    - docker-compose -f docker-compose.yml up
-
-
-# Test:
+# Test app:
 #   stage: test
-#   tags:
-#     - shell-runner
+#   image: docker/compose:1.29.2
 #   script:
-#     - docker-compose -f docker-compose.yml -f docker-compose.test.yml up --abort-on-container-exit --exit-code-from test
+#     - docker-compose -f docker-compose.yml up
+
+Test:
+  stage: test
+  tags:
+    - shell-runner
+  script:
+    - docker-compose -f docker-compose.yml -f docker-compose.test.yml up --abort-on-container-exit --exit-code-from test
+
+Deploy container:
+  stage: deploy
+  tags:
+    - docker-runner
+  image: alpine:3.15
+  before_script: 
+    - apk update && apk add openssh-client 
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $SERVER >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts  
+  script:
+    - ssh -o StrictHostKeyChecking=no $USERNAME@$SERVER "docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY"
+    - ssh -o StrictHostKeyChecking=no $USERNAME@$SERVER "docker-compose -f docker-compose.yml up"
