@@ -4,6 +4,7 @@ stages:
   - test
   - deploy
 
+
 variables:
   NAME: web
   WEBSERVER: nginx
