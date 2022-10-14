@@ -3,9 +3,6 @@ stages:
   - push
   - test
 
-
-
-
 variables:
   NAME: web
   WEBSERVER: nginx
@@ -35,16 +32,16 @@ Push to registry:
     - docker push $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/$NAME:$CI_COMMIT_SHORT_SHA
     - docker push $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/$WEBSERVER:$CI_COMMIT_SHORT_SHA
 
-# # Test app:
-# #   stage: test
-# #   image: docker/compose:1.29.2
-# #   script:
-# #     - docker-compose -f docker-compose.test.yml up
-
-
-Test:
+Test app:
   stage: test
-  tags:
-    - shell-runner
+  image: docker/compose:1.29.2
   script:
-    - docker-compose -f docker-compose.yml -f docker-compose.test.yml up --abort-on-container-exit --exit-code-from test
+    - docker-compose -f docker-compose.yml up
+
+
+# Test:
+#   stage: test
+#   tags:
+#     - shell-runner
+#   script:
+#     - docker-compose -f docker-compose.yml -f docker-compose.test.yml up --abort-on-container-exit --exit-code-from test
